@@ -15,12 +15,13 @@ import com.tools.excel.write.ExcelWriteFieldMapping;
 public class ExcelToolsTest {
 
 	public static void main(String[] args) {
-//		write1();
-//		write2();
+		write1();
+		write2();
 		read();
 	}
 	
 	public static void write1() {
+		String filePath = ExcelToolsTest.class.getResource("/").getPath();
 		ExcelWriteConfig<TestBean> config = new ExcelWriteConfig<TestBean>();
 		config.setDataList(getDatas());
 		config.setSheetIndex(1);
@@ -31,12 +32,13 @@ public class ExcelToolsTest {
 		fieldMap.put("B", "age").setHeadName("年龄");
 		fieldMap.put("c", "birthday").setHeadName("出生日期");
 		config.setExcelWriteFieldMapping(fieldMap);
-		ExcelTools.writeExcel(new File("D:/template.xlsx"), "D:/", "test1", config);
+		ExcelTools.writeExcel(new File(ExcelToolsTest.class.getResource("/template.xlsx").getPath()), filePath, "test1", config);
 	}
 	
 	public static void write2() {
+		String filePath = ExcelToolsTest.class.getResource("/").getPath();
 		ExcelWriteConfig<TestBean> config = new ExcelWriteConfig<TestBean>();
-		config.setDataList(new ArrayList<TestBean>());
+		config.setDataList(getDatas());
 		config.setSheetIndex(1);
 		config.setStartRow(1);
 		
@@ -45,7 +47,7 @@ public class ExcelToolsTest {
 		fieldMap.put("B", "age").setHeadName("年龄");
 		fieldMap.put("c", "birthday").setHeadName("出生日期");
 		config.setExcelWriteFieldMapping(fieldMap);
-		ExcelTools.writeExcel(ExcelType.XLSX, "D:/", "test2", config);
+		ExcelTools.writeExcel(ExcelType.XLSX, filePath, "test2", config);
 	}
 	
 	public static void read() {
@@ -60,7 +62,8 @@ public class ExcelToolsTest {
 		fieldMap.put("B", "age");
 		fieldMap.put("c", "birthday");
 		config.setColumn(fieldMap);
-		List<TestBean> dataList = ExcelTools.readExcel(new File("D:/test1.xlsx"), config);
+		File excelFile = new File(ExcelToolsTest.class.getResource("/test1.xlsx").getPath());
+		List<TestBean> dataList = ExcelTools.readExcel(excelFile, config);
 		for (TestBean temp : dataList) {
 			System.out.println("name:" + temp.getName() + "---age:" + temp.getAge() + "---birthday:" + temp.getBirthday());
 		}
