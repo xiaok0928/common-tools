@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.tools.common.Validate;
@@ -35,7 +36,7 @@ public class ExcelTools {
 		System.out.println("---------------------------------------read excel start---------------------------------------");
 		long startTime = System.currentTimeMillis();
 		boolean isSuccess = true;
-		List<T> dataList = null;
+		List<T> dataList = new ArrayList<T>();
 		try {
 			InputStream fileStream = new FileInputStream(file);
 			dataList = ExcelReadValue.readExcel(fileStream, readConfig);
