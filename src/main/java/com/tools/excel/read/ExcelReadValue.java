@@ -35,9 +35,9 @@ public class ExcelReadValue {
 	 * @param file
 	 * @param readConfig
 	 * @return
-	 * @throws Exception 
+	 * @throws ExcelException 
 	 */
-	public static <T> List<T> readExcel(InputStream file, ExcelUserReadConfig<T> readConfig) throws Exception {
+	public static <T> List<T> readExcel(InputStream file, ExcelUserReadConfig<T> readConfig) throws ExcelException {
 		//判断文件是否存在
 		Validate.isTrue(null == file, "未读取到文件!");
 
@@ -97,9 +97,9 @@ public class ExcelReadValue {
 	 * @param sheet
 	 * @param excelConfig
 	 * @return
-	 * @throws Exception 
+	 * @throws ExcelException 
 	 */
-	private static <T> List<T> readExcelValue(Sheet sheet, ExcelReadConfig<T> excelConfig) throws Exception {
+	private static <T> List<T> readExcelValue(Sheet sheet, ExcelReadConfig<T> excelConfig) throws ExcelException {
 		List<T> dataList = new ArrayList<T>();
 		Row row = null;
 		//判断起始行及结束行是否有值
@@ -216,9 +216,9 @@ public class ExcelReadValue {
 	 * @param valueClass
 	 * @param excelValue
 	 * @return
-	 * @throws Exception
+	 * @throws ExcelException
 	 */
-	private static <T> boolean valueIsEffect(T valueClass, Map<String, Cell> excelValue) throws Exception {
+	private static <T> boolean valueIsEffect(T valueClass, Map<String, Cell> excelValue) throws ExcelException {
 		//获取该数据实体类的类
 		Class<?> clazz = valueClass.getClass();
 		//标识数据是否有效, 有效的依据为该实体中只要存在一个不为空的属性既有效

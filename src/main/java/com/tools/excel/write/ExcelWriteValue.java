@@ -1,8 +1,10 @@
 package com.tools.excel.write;
 
 import java.beans.PropertyDescriptor;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -36,9 +38,13 @@ public class ExcelWriteValue {
 	 * @param excelType
 	 * @param outputStream
 	 * @param excelWriteConfig
-	 * @throws Exception
+	 * @throws IOException 
+	 * @throws InvocationTargetException 
+	 * @throws IllegalArgumentException 
+	 * @throws IllegalAccessException 
+	 * @throws ExcelException
 	 */
-	public static <T> void writeExcel(ExcelType excelType, OutputStream outputStream, ExcelWriteConfig<T> excelWriteConfig) throws Exception {
+	public static <T> void writeExcel(ExcelType excelType, OutputStream outputStream, ExcelWriteConfig<T> excelWriteConfig) throws ExcelException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		Validate.isNotNull(excelType, "文件类型不能为空!");
 		Validate.isNotNull(outputStream, "文件路径参数无效!");
 		
@@ -62,9 +68,13 @@ public class ExcelWriteValue {
 	 * @param excelTemplate
 	 * @param outputStream
 	 * @param excelWriteConfig
-	 * @throws Exception
+	 * @throws ExcelException
+	 * @throws IOException 
+	 * @throws InvocationTargetException 
+	 * @throws IllegalArgumentException 
+	 * @throws IllegalAccessException 
 	 */
-	public static <T> void writeExcel(InputStream excelTemplate, OutputStream outputStream, ExcelWriteConfig<T> excelWriteConfig) throws Exception {
+	public static <T> void writeExcel(InputStream excelTemplate, OutputStream outputStream, ExcelWriteConfig<T> excelWriteConfig) throws ExcelException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		Validate.isNotNull(excelTemplate, "模板文件无效!");
 		Validate.isNotNull(outputStream, "文件路径参数无效!");
 		Workbook workbook = null;
@@ -88,9 +98,13 @@ public class ExcelWriteValue {
 	 * @param workbook
 	 * @param outputStream
 	 * @param excelWriteConfig
-	 * @throws Exception
+	 * @throws IOException 
+	 * @throws InvocationTargetException 
+	 * @throws IllegalArgumentException 
+	 * @throws IllegalAccessException 
+	 * @throws ExcelException
 	 */
-	private static <T> void writeExcelSheet(boolean useExcelTemplate, Workbook workbook, OutputStream outputStream, ExcelWriteConfig<T> excelWriteConfig) throws Exception {
+	private static <T> void writeExcelSheet(boolean useExcelTemplate, Workbook workbook, OutputStream outputStream, ExcelWriteConfig<T> excelWriteConfig) throws ExcelException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		Sheet sheet = null;
 
 		//如果使用的是Excel模板的话,则根据Sheet名称获取Sheet
@@ -162,9 +176,12 @@ public class ExcelWriteValue {
 	 * @param fieldMapping
 	 * @param datas
 	 * @param dataStartRow
-	 * @throws Exception
+	 * @throws InvocationTargetException 
+	 * @throws IllegalArgumentException 
+	 * @throws IllegalAccessException 
+	 * @throws ExcelException
 	 */
-	private static <T> void writeExcelValue(Sheet sheet, Map<Integer, String> fieldMapping, List<T> datas, Integer dataStartRow) throws Exception {
+	private static <T> void writeExcelValue(Sheet sheet, Map<Integer, String> fieldMapping, List<T> datas, Integer dataStartRow) throws ExcelException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		Validate.isNotNull(dataStartRow, "起始行计算错误!");
 		Validate.isNotNull(sheet, "Sheet创建错误!");
 		//循环写入数据
@@ -186,9 +203,12 @@ public class ExcelWriteValue {
 	 * @param row
 	 * @param fieldMapping
 	 * @param tclass
-	 * @throws Exception
+	 * @throws InvocationTargetException 
+	 * @throws IllegalArgumentException 
+	 * @throws IllegalAccessException 
+	 * @throws ExcelException
 	 */
-	private static <T> void writeExcelRowValue(Row row, Map<Integer, String> fieldMapping, T tclass) throws Exception {
+	private static <T> void writeExcelRowValue(Row row, Map<Integer, String> fieldMapping, T tclass) throws ExcelException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		Validate.isNotNull(row, "创建写入行出错!");
 		Class<?> clazz = tclass.getClass();
 		//循环写入每一列的值

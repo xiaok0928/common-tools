@@ -2,13 +2,16 @@ package com.tools.excel;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.tools.common.Validate;
+import com.tools.excel.common.ExcelException;
 import com.tools.excel.common.ExcelType;
 import com.tools.excel.common.ExcelUtil;
 import com.tools.excel.read.ExcelReadValue;
@@ -31,8 +34,10 @@ public class ExcelTools {
 	 * @param file
 	 * @param readConfig
 	 * @return
+	 * @throws ExcelException 
+	 * @throws FileNotFoundException 
 	 */
-	public static <T> List<T> readExcel(File file, ExcelUserReadConfig<T> readConfig) {
+	public static <T> List<T> readExcel(File file, ExcelUserReadConfig<T> readConfig) throws ExcelException, FileNotFoundException {
 		System.out.println("---------------------------------------read excel start---------------------------------------");
 		long startTime = System.currentTimeMillis();
 		boolean isSuccess = true;
@@ -40,13 +45,15 @@ public class ExcelTools {
 		try {
 			InputStream fileStream = new FileInputStream(file);
 			dataList = ExcelReadValue.readExcel(fileStream, readConfig);
-		} catch (Exception e) {
+		} catch (ExcelException e) {
 			isSuccess = false;
 			e.printStackTrace();
+			throw e;
+		} finally {
+			System.out.println("read excel is success: " + isSuccess);
+			System.out.println("read excel use time: " + (System.currentTimeMillis() - startTime) + "ms");
+			System.out.println("---------------------------------------read excel end---------------------------------------");
 		}
-		System.out.println("read excel is success: " + isSuccess);
-		System.out.println("read excel use time: " + (System.currentTimeMillis() - startTime) + "ms");
-		System.out.println("---------------------------------------read excel end---------------------------------------");
 		return dataList;
 	}
 
@@ -59,8 +66,9 @@ public class ExcelTools {
 	 * @param filePath
 	 * @param fileName
 	 * @param excelWriteConfig
+	 * @throws Exception 
 	 */
-	public static <T> void writeExcel(ExcelType excelType, String filePath, String fileName, ExcelWriteConfig<T> excelWriteConfig) {
+	public static <T> void writeExcel(ExcelType excelType, String filePath, String fileName, ExcelWriteConfig<T> excelWriteConfig) throws Exception {
 		System.out.println("---------------------------------------write excel start---------------------------------------");
 		long startTime = Long.valueOf(System.currentTimeMillis());
 		boolean isSuccess = true;
@@ -81,10 +89,12 @@ public class ExcelTools {
 		} catch (Exception e) {
 			isSuccess = false;
 			e.printStackTrace();
+			throw e;
+		} finally {
+			System.out.println("write excel is success: " + isSuccess);
+			System.out.println("write excel use time: " + (System.currentTimeMillis() - startTime) + "ms");
+			System.out.println("---------------------------------------write excel end---------------------------------------");
 		}
-		System.out.println("write excel is success: " + isSuccess);
-		System.out.println("write excel use time: " + (System.currentTimeMillis() - startTime) + "ms");
-		System.out.println("---------------------------------------write excel end---------------------------------------");
 	}
 
 	/**
@@ -96,8 +106,9 @@ public class ExcelTools {
 	 * @param filePath
 	 * @param fileName
 	 * @param excelWriteConfig
+	 * @throws Exception 
 	 */
-	public static <T> void writeExcel(File templateFile, String filePath, String fileName, ExcelWriteConfig<T> excelWriteConfig) {
+	public static <T> void writeExcel(File templateFile, String filePath, String fileName, ExcelWriteConfig<T> excelWriteConfig) throws Exception {
 		System.out.println("---------------------------------------write excel start---------------------------------------");
 		long startTime = System.currentTimeMillis();
 		boolean isSuccess = true;
@@ -118,9 +129,11 @@ public class ExcelTools {
 		} catch (Exception e) {
 			isSuccess = false;
 			e.printStackTrace();
+			throw e;
+		} finally {
+			System.out.println("write excel is success: " + isSuccess);
+			System.out.println("write excel use time: " + (System.currentTimeMillis() - startTime) + "ms");
+			System.out.println("---------------------------------------write excel end---------------------------------------");
 		}
-		System.out.println("write excel is success: " + isSuccess);
-		System.out.println("write excel use time: " + (System.currentTimeMillis() - startTime) + "ms");
-		System.out.println("---------------------------------------write excel end---------------------------------------");
 	}
 }

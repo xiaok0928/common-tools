@@ -1,12 +1,14 @@
 package com.tools.excel;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.tools.excel.common.ExcelException;
 import com.tools.excel.common.ExcelType;
 import com.tools.excel.read.ExcelUserReadConfig;
 import com.tools.excel.write.ExcelWriteConfig;
@@ -32,7 +34,14 @@ public class ExcelToolsTest {
 		fieldMap.put("B", "age").setHeadName("年龄");
 		fieldMap.put("c", "birthday").setHeadName("出生日期");
 		config.setExcelWriteFieldMapping(fieldMap);
-		ExcelTools.writeExcel(new File(ExcelToolsTest.class.getResource("/template.xlsx").getPath()), filePath, "test1", config);
+		try {
+			ExcelTools.writeExcel(new File(ExcelToolsTest.class.getResource("/template.xlsx").getPath()), filePath, "test1", config);
+		} catch (Exception e) {
+			
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+		}
 	}
 	
 	public static void write2() {
@@ -47,7 +56,14 @@ public class ExcelToolsTest {
 		fieldMap.put("B", "age").setHeadName("年龄");
 		fieldMap.put("c", "birthday").setHeadName("出生日期");
 		config.setExcelWriteFieldMapping(fieldMap);
-		ExcelTools.writeExcel(ExcelType.XLSX, filePath, "test2", config);
+		try {
+			ExcelTools.writeExcel(ExcelType.XLSX, filePath, "test2", config);
+		} catch (Exception e) {
+			
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+		}
 	}
 	
 	public static void read() {
@@ -63,7 +79,20 @@ public class ExcelToolsTest {
 		fieldMap.put("c", "birthday");
 		config.setColumn(fieldMap);
 		File excelFile = new File(ExcelToolsTest.class.getResource("/test1.xlsx").getPath());
-		List<TestBean> dataList = ExcelTools.readExcel(excelFile, config);
+		List<TestBean> dataList = null;
+		try {
+			dataList = ExcelTools.readExcel(excelFile, config);
+		} catch (ExcelException e) {
+			
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+		} catch (FileNotFoundException e) {
+			
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+		}
 		for (TestBean temp : dataList) {
 			System.out.println("name:" + temp.getName() + "---age:" + temp.getAge() + "---birthday:" + temp.getBirthday());
 		}
