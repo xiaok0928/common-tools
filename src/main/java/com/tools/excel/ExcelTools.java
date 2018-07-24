@@ -36,7 +36,7 @@ public class ExcelTools {
 	 * @throws ExcelException 
 	 * @throws FileNotFoundException 
 	 */
-	public static <T> List<T> readExcel(File file, ExcelUserReadConfig<T> readConfig) throws ExcelException, FileNotFoundException {
+	public static <T> List<T> readExcel(File file, ExcelUserReadConfig<T> readConfig) throws Exception {
 		System.out.println("---------------------------------------read excel start---------------------------------------");
 		long startTime = System.currentTimeMillis();
 		boolean isSuccess = true;
@@ -44,7 +44,7 @@ public class ExcelTools {
 		try {
 			InputStream fileStream = new FileInputStream(file);
 			dataList = ExcelReadValue.readExcel(fileStream, readConfig);
-		} catch (ExcelException e) {
+		} catch (Exception e) {
 			isSuccess = false;
 			e.printStackTrace();
 			throw e;
