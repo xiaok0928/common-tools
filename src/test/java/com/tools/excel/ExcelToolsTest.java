@@ -1,14 +1,12 @@
 package com.tools.excel;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.tools.excel.common.ExcelException;
 import com.tools.excel.common.ExcelType;
 import com.tools.excel.read.ExcelUserReadConfig;
 import com.tools.excel.write.ExcelWriteConfig;
@@ -82,12 +80,7 @@ public class ExcelToolsTest {
 		List<TestBean> dataList = null;
 		try {
 			dataList = ExcelTools.readExcel(excelFile, config);
-		} catch (ExcelException e) {
-			
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			
-		} catch (FileNotFoundException e) {
+		} catch (Exception e) {
 			
 			// TODO Auto-generated catch block
 			e.printStackTrace();
