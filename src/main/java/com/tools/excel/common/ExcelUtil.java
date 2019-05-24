@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.BeanUtils;
@@ -188,10 +189,10 @@ public class ExcelUtil {
 		if (cell == null) {
 			return null;
 		}
-		int cellType = cell.getCellType();
+		CellType cellType = cell.getCellType();
 		Object value = null;
 		switch (cellType) {
-			case Cell.CELL_TYPE_NUMERIC:
+			case NUMERIC:
 				Object inputValue = null;
 				double doubleVal = cell.getNumericCellValue();
 				if (DateUtil.isCellDateFormatted(cell)) {
@@ -206,20 +207,20 @@ public class ExcelUtil {
 				}
 				value = inputValue;
 				break;
-			case Cell.CELL_TYPE_STRING:
+			case STRING:
 				value = cell.getStringCellValue();
 				break;
-			case Cell.CELL_TYPE_FORMULA:
+			case FORMULA:
 				value = cell.getCellFormula();
 				break;
-			case Cell.CELL_TYPE_BLANK:
+			case BLANK:
 				value = null;
 				break;
-			case Cell.CELL_TYPE_BOOLEAN:
+			case BOOLEAN:
 				boolean bool = cell.getBooleanCellValue();
 				value = Boolean.valueOf(bool);
 				break;
-			case Cell.CELL_TYPE_ERROR:
+			case ERROR:
 				ExcelException e = new ExcelException();
 				e.setSheetName(cell.getSheet().getSheetName());
 				e.setSheetIndex(cell.getSheet().getWorkbook().getSheetIndex(cell.getSheet()));
