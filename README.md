@@ -1,5 +1,5 @@
 <h3>通用工具类</h3><br />
-EXCEL读写工具<br />
+EXCEL读写工具(支持大数据量写入)<br />
 HTTP/HTTPS请求(封装HttpClient)工具<br />
 加载配置文件工具<br />
 生成随机数工具<br />

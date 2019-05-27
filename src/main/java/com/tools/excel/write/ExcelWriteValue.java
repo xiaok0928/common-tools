@@ -15,7 +15,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.springframework.util.StringUtils;
 
 import com.tools.common.Validate;
@@ -30,6 +30,7 @@ import com.tools.excel.common.ExcelUtil;
  * <br/>Creation Time : 2018年5月11日 下午1:04:47
  */
 public class ExcelWriteValue {
+	
 	/**
 	 * Description : 创建Excel并写入数据
 	 * <br/>Created By : xiaok0928@hotmail.com 
@@ -50,14 +51,22 @@ public class ExcelWriteValue {
 		
 		//根据用户输入的文件类型创建不同类型的工作区
 		Workbook workbook = null;
-		if (excelType == ExcelType.XLS)
+		if (excelType == ExcelType.XLS) {
 			workbook = new HSSFWorkbook();
-		else {
-			workbook = new XSSFWorkbook();
+		} else {
+			workbook = new SXSSFWorkbook();
 		}
 
 		//写入Excel的Sheet
-		writeExcelSheet(false, workbook, outputStream, excelWriteConfig);
+		writeExcelSheet(false, workbook, excelWriteConfig);
+		
+		//写入文件
+		workbook.write(outputStream);
+		//刷新缓冲区
+		outputStream.flush();
+		outputStream.close();
+		//停止读写
+		workbook.close();
 	}
 
 	/**
@@ -86,7 +95,7 @@ public class ExcelWriteValue {
 		}
 
 		//写入Excel的Sheet
-		writeExcelSheet(true, workbook, outputStream, excelWriteConfig);
+		writeExcelSheet(true, workbook, excelWriteConfig);
 	}
 
 	/**
@@ -104,7 +113,7 @@ public class ExcelWriteValue {
 	 * @throws IllegalAccessException 
 	 * @throws ExcelException
 	 */
-	private static <T> void writeExcelSheet(boolean useExcelTemplate, Workbook workbook, OutputStream outputStream, ExcelWriteConfig<T> excelWriteConfig) throws ExcelException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	private static <T> void writeExcelSheet(boolean useExcelTemplate, Workbook workbook, ExcelWriteConfig<T> excelWriteConfig) throws ExcelException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		Sheet sheet = null;
 
 		//如果使用的是Excel模板的话,则根据Sheet名称获取Sheet
@@ -137,9 +146,6 @@ public class ExcelWriteValue {
 
 		//写入Excel数据
 		writeExcelValue(sheet, excelWriteConfig.getFieldMap(), excelWriteConfig.getDataList(), startRow);
-
-		//输出文件
-		workbook.write(outputStream);
 	}
 
 	/**
@@ -251,6 +257,8 @@ public class ExcelWriteValue {
 			cell.setCellValue(((Short) value).shortValue());
 		} else if ((value instanceof Byte)) {
 			cell.setCellValue(((Byte) value).byteValue());
+		} else if (value == null) {
+			cell.setCellValue("");
 		} else {
 			throw new ExcelException(ExcelExceptionEnum.EW00003, "写入的值类型转换错误!坐标:" + (cell.getRowIndex() + 1) + "," + ExcelUtil.convertIndexToNav(cell.getColumnIndex() + 1) + "value:" + value);
 		}

@@ -95,7 +95,7 @@ public class ExcelTools {
 			System.out.println("---------------------------------------write excel end---------------------------------------");
 		}
 	}
-
+	
 	/**
 	 * Description : Excel写入(使用模板)
 	 * <br/>Created By : xiaok0928@hotmail.com 
@@ -119,7 +119,8 @@ public class ExcelTools {
 			ExcelUtil.validateWriteConfig(true, excelWriteConfig);
 			
 			InputStream excelTemplate = new FileInputStream(templateFile);
-			fileName = fileName + templateFile.getName().substring(templateFile.getName().lastIndexOf("."), templateFile.getName().length()).toLowerCase();
+			String suffix = templateFile.getName().substring(templateFile.getName().lastIndexOf("."), templateFile.getName().length()).toLowerCase();
+			fileName = fileName + suffix;
 			File excelFile = new File(filePath, fileName);
 			excelFile.createNewFile();
 			System.out.println("write excel location: " + excelFile.getAbsolutePath());
