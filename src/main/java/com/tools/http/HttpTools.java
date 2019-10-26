@@ -231,7 +231,7 @@ public class HttpTools {
 
 			// 添加JSON类型的参数
 			if (!StringUtils.isEmpty(urlConfig.getJsonParams())) {
-				StringEntity params = new StringEntity(urlConfig.getJsonParams(), urlConfig.getCharset());
+				StringEntity params = new StringEntity(urlConfig.getJsonParams(), urlConfig.getContentType());
 				httpPost.setEntity(params);
 			} else {
 				//判断是否存在文件参数
